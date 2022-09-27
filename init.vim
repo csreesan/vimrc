@@ -78,6 +78,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " vim snippets TODO: check what this is for and if both needed
 " Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets' " the snippets 
 
 " TODO: check what this is for
 " Plug 'ervandew/supertab'
@@ -88,13 +89,15 @@ Plug 'preservim/nerdtree'
 
 " go
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'sebdah/vim-delve' " debugger
+"Plug 'sebdah/vim-delve' " debugger is part of vim-go already
 
 "git
 Plug 'tpope/vim-fugitive'
 
-" TODO: check what this is for
-" Plug 'preservim/tagbar'
+" Tag bar for code navigation
+" :TagbarOpen
+" :TagbarClose
+Plug 'preservim/tagbar'
 
 "terraform: probably not needed 
 " Plug 'hashivim/vim-terraform'
@@ -129,13 +132,16 @@ let g:user_emmet_leader_key=',' " ','+',' to use emmet
 "  GO
 "
 
+" some redundant with coc calls
+" go-callers = coc-references
+" go-implements = coc-implementation
 autocmd BufEnter *.go nmap <leader>cc  <Plug>(go-callers)
 autocmd BufEnter *.go nmap <leader>i  <Plug>(go-info)
 autocmd BufEnter *.go nmap <leader>ii  <Plug>(go-implements)
 autocmd BufEnter *.go nmap <leader>ci  <Plug>(go-describe)
-nmap <leader>cr <Plug>(coc-references)
 
 "Override gd for go to use vim-go
+" not sure if neccessary or useful, coc seems to work just as well
 autocmd FileType go nmap <silent> gd <Plug>(go-def)
 
 " vim-go highlighting
@@ -156,9 +162,13 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" make enter apply coc automcomplete
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
 " CoC extensions
 " coc-jedi is for python
 let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyright', 'coc-css', 'coc-html']
+
 
 
 " -------------------------------

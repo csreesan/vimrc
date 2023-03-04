@@ -118,14 +118,16 @@ Plug 'ap/vim-css-color'
 " JSX and TSX highlight and indenting
 " Plug 'MaxMEllon/vim-jsx-pretty'
 
+" Github Copilot
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 
 " -------------------------------
 "  EMMET 
 "  for html boilerplate autofill
-
-let g:user_emmet_leader_key=',' " ','+',' to use emmet
+" let g:user_emmet_leader_key=',' " ','+',' to use emmet
 
 
 " -------------------------------
@@ -177,3 +179,10 @@ let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyrigh
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+
+" -------------------------------
+"  Copilot
+"  https://copilot.github.com/
+imap <C-]> <Plug>(copilot-next)
+imap <C-[> <Plug>(copilot-prev)

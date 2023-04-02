@@ -11,8 +11,6 @@ set number
 set title 
 set colorcolumn=80
 
-colorscheme gruvbox
-
 " Not imported over from vimrc
 "
 " set nocompatible              " be iMproved, required // not sure what for
@@ -123,6 +121,7 @@ Plug 'github/copilot.vim'
 
 call plug#end()
 
+colorscheme gruvbox
 
 " -------------------------------
 "  EMMET 
@@ -184,5 +183,5 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " -------------------------------
 "  Copilot
 "  https://copilot.github.com/
-imap <C-]> <Plug>(copilot-next)
-imap <C-[> <Plug>(copilot-prev)
+"imap <C-]> <Plug>(copilot-next)
+"imap <C-[> <Plug>(copilot-prev)

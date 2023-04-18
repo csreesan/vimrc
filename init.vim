@@ -11,6 +11,9 @@ set number
 set title 
 set colorcolumn=80
 
+" increasing maximum amount of memory to use for pattern matching
+"set maxmempattern=5000
+
 " Not imported over from vimrc
 "
 " set nocompatible              " be iMproved, required // not sure what for

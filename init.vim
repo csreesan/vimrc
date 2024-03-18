@@ -92,6 +92,12 @@ Plug 'golang/vscode-go'
 Plug 'cstrap/python-snippets'
 
 
+" fix indentation
+" This resolves the issue with double indentation when pressing enter inside
+" of the brackets.
+Plug 'Vimjas/vim-python-pep8-indent'
+
+
 " TODO: check what this is for
 " Plug 'ervandew/supertab'
 

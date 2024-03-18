@@ -11,8 +11,6 @@ set number
 set title 
 set colorcolumn=80
 
-" increasing maximum amount of memory to use for pattern matching
-"set maxmempattern=5000
 
 " Not imported over from vimrc
 "
@@ -77,16 +75,30 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " vim snippets TODO: check what this is for and if both needed
-" Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets' " the snippets 
+" Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets' " the snippets 
+" Plug 'natebosch/dartlang-snippets'
+" snipmate (alternative to ultisnips)
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
+" Plug 'garbas/vim-snipmate'
+
+" vscode snippet
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'Neevash/awesome-flutter-snippets'
+Plug 'Alexisvt/flutter-snippets'
+Plug 'golang/vscode-go'
+Plug 'cstrap/python-snippets'
+
 
 " TODO: check what this is for
 " Plug 'ervandew/supertab'
 
 " nerdtree directory navigator
 Plug 'preservim/nerdtree'
-
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 
 " go
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -120,11 +132,21 @@ Plug 'ap/vim-css-color'
 " Plug 'MaxMEllon/vim-jsx-pretty'
 
 " Github Copilot
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
+
+
+" Flutter 
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
+
+
+" Brackets
+Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
 colorscheme gruvbox
+
 
 " -------------------------------
 "  EMMET 
@@ -166,25 +188,76 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" make enter apply coc automcomplete
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-
+" -------------------------------
+"  COC
 " CoC extensions
 " coc-jedi is for python
-let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyright', 'coc-css', 'coc-html']
+let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyright', 'coc-css', 'coc-html', 'coc-flutter']
+" apply codeAction to the selected region.
+" This brings up command like 'Extract Widget' 'Wrap with ...' etc.
+xmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
+" make enter apply coc automcomplete
+" inoremap <silent><expr> <CR> coc#pum#visible() ? (IsInsideBrackets() ?  coc#pum#confirm() . "\<ESC>dd" : coc#pum#confirm()) : "\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+
+" disable autopairs mapping of CR which leads to conflict when autocomplete
+" happens inside of the brackets.
+" Unfortunately this means losing the autoindent when pressing enter inside
+" of the brackets.
+" If you do not turn this off then you have to deal with duplication of
+" autocomplete if it is within a bracket.
+" let g:AutoPairsMapCR = 0
 
 
 " -------------------------------
 "  UltiSnips
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsJumpForwardTrigger = "<c-b>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+let g:UltiSnipsEditSplit="vertical"
 
+let g:UltiSnipsSnippetDirectories=["/Users/chrissreesangkom/.vim/plugged/vim-snippets/UltiSnips"]
+
+
+" ------------
+"  SnipMate
+"
+let g:snipMate = get(g:, 'snipMate', {}) " Allow for vimrc re-sourcing
+let g:snipMate.scope_aliases = {}
+" Setting to include dart-flutter in dart scope, defined by vim-snippets
+" in .vim/pluged/vim-snippets/snippets
+let g:snipMate.scope_aliases['dart'] = 'dart,dart-flutter'
+
+" ---------
+"  vs code snip
+imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <TAB>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<TAB>'
+smap <expr> <TAB>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<TAB>'
 
 " -------------------------------
 "  Copilot
 "  https://copilot.github.com/
 "imap <C-]> <Plug>(copilot-next)
 "imap <C-[> <Plug>(copilot-prev)
+
+
+" -------------------------------
+"  Dart Settings
+" Check if the autocmd group 'DartSettings' exists
+if exists("#DartSettings")
+  " Clear the 'DartSettings' autocmd group
+  autocmd! DartSettings
+endif
+" Create a new autocmd group named 'DartSettings'
+augroup DartSettings
+  autocmd!
+
+  " When you open a Dart file, set specific settings
+  autocmd FileType dart setlocal shiftwidth=2
+  autocmd FileType dart setlocal expandtab
+  autocmd FileType dart setlocal tabstop=2
+augroup END

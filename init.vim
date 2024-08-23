@@ -9,7 +9,7 @@ syntax on
 set relativenumber
 set number
 set title 
-set colorcolumn=80
+" set colorcolumn=80 " mark column for line length limit
 
 
 " Not imported over from vimrc
@@ -38,7 +38,7 @@ nnoremap <leader>[ gT
 nnoremap <leader>] gt
 nnoremap <leader>p "0p
 nnoremap <leader>6 <C-^>
-nnoremap <leader>c "*yy
+nnoremap <leader>c "*
 nnoremap <leader>v :vertical resize 84<CR>
 
 " cycling to different windows
@@ -63,6 +63,9 @@ map <Leader>T :tab term ++close<cr>
 " Plugins
 
 call plug#begin('~/.vim/plugged')
+
+" markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 
 " gruvbox colore theme
 Plug 'morhetz/gruvbox'
@@ -113,6 +116,9 @@ Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 "git
 Plug 'tpope/vim-fugitive'
 
+" brackets and quotes
+Plug 'tpope/vim-surround'
+
 " Tag bar for code navigation
 " :TagbarOpen
 " :TagbarClose
@@ -138,7 +144,7 @@ Plug 'ap/vim-css-color'
 " Plug 'MaxMEllon/vim-jsx-pretty'
 
 " Github Copilot
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
 
 
 " Flutter 
@@ -148,6 +154,13 @@ Plug 'thosakwe/vim-flutter'
 
 " Brackets
 Plug 'jiangmiao/auto-pairs'
+
+
+" Debugger
+Plug 'puremourning/vimspector'
+
+" Tcomment
+Plug 'tomtom/tcomment_vim'
 
 call plug#end()
 
@@ -198,7 +211,8 @@ nmap <silent> gr <Plug>(coc-references)
 "  COC
 " CoC extensions
 " coc-jedi is for python
-let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyright', 'coc-css', 'coc-html', 'coc-flutter']
+" coc-cland is for c
+let g:coc_global_extensions = ['coc-tsserver', 'coc-go', 'coc-jedi', 'coc-pyright', 'coc-css', 'coc-html', 'coc-flutter', 'coc-clangd']
 " apply codeAction to the selected region.
 " This brings up command like 'Extract Widget' 'Wrap with ...' etc.
 xmap <leader>a <Plug>(coc-codeaction-selected)
@@ -267,3 +281,47 @@ augroup DartSettings
   autocmd FileType dart setlocal expandtab
   autocmd FileType dart setlocal tabstop=2
 augroup END
+
+" -------------------------------
+"  Typescript Settings
+" Check if the autocmd group 'TypescriptSettings' exists
+if exists("#TypescriptSettings")
+  " Clear the 'DartSettings' autocmd group
+  autocmd! TypescriptSettings
+endif
+
+augroup TypescriptSettings
+  autocmd!
+
+  autocmd FileType typescript,javascript setlocal shiftwidth=2
+  autocmd FileType typescript,javascript setlocal expandtab
+  autocmd FileType typescript,javascript setlocal tabstop=2
+augroup END
+
+augroup CLangSettings
+  autocmd!
+
+  autocmd FileType c,cpp setlocal shiftwidth=4
+  autocmd FileType c,cpp setlocal expandtab
+  autocmd FileType c,cpp setlocal tabstop=4
+augroup END
+
+" Set tab settings for HTML files
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 expandtab
+autocmd FileType css setlocal tabstop=2 shiftwidth=2 expandtab
+
+
+" NERDTree
+let NERDTreeShowHidden=1 " show hidden file
+au VimEnter *  NERDTree " open NERDTree by default
+
+
+lua << EOF
+vim.diagnostic.config({
+  underline = false,
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+})
+EOF
+

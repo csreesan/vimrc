@@ -408,3 +408,28 @@ require("mason-lspconfig").setup({
   automatic_installation = true,
 })
 EOF
+
+
+"""
+" lspconfig key binding for code navigation
+
+"Go to definition
+nnoremap gd <cmd>lua vim.lsp.buf.definition()<CR>
+
+" Go to declaration (e.g., variable declaration)
+nnoremap gD <cmd>lua vim.lsp.buf.declaration()<CR>
+
+" Find references
+nnoremap gr <cmd>lua vim.lsp.buf.references()<CR>
+
+" Hover docs
+nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>
+
+" Signature help (e.g., when inside function call)
+nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+
+" Rename symbol
+nnoremap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
+
+" Format buffer
+nnoremap <leader>f <cmd>lua vim.lsp.buf.format({ async = true })<CR>

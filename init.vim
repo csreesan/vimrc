@@ -11,7 +11,7 @@ set title
 set expandtab
 set shiftwidth=4
 set tabstop=4
-" set colorcolumn=80 " mark column for line length limit
+set colorcolumn=80 " mark column for line length limit
 
 
 " Not imported over from vimrc
@@ -32,9 +32,9 @@ set tabstop=4
 " leader key
 let mapleader = "\<Space>"
 
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>r :Rg<CR>
+nnoremap <leader>f :Telescope find_files<CR>
+nnoremap <leader>b :Telescope buffers<CR>
+nnoremap <leader>r :Telescope live_grep<CR>
 nnoremap <leader>n :NERDTree<CR>
 nnoremap <leader>[ gT
 nnoremap <leader>] gt
@@ -65,6 +65,12 @@ map <Leader>T :tab term ++close<cr>
 " Plugins
 
 call plug#begin()
+"wrapping quotes
+
+"telescope for showing conntext
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 "lsp and autocomplete, Lua native
 Plug 'neovim/nvim-lspconfig'
 "nvim-cmp
@@ -87,8 +93,8 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' 
 Plug 'morhetz/gruvbox'
 
 " file search
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
 
 " coc language server
 "" Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -107,6 +113,7 @@ Plug 'junegunn/fzf.vim'
 " Plug 'hrsh7th/vim-vsnip-integ'
 " Plug 'golang/vscode-go'
 " Plug 'cstrap/python-snippets'
+Plug 'rafamadriz/friendly-snippets'
 
 
 " fix indentation
@@ -162,7 +169,7 @@ Plug 'ap/vim-css-color'
 
 
 " Brackets
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 
 
 " Debugger
@@ -310,11 +317,12 @@ au VimEnter *  NERDTree " open NERDTree by default
 
 lua << EOF
 vim.diagnostic.config({
-  underline = false,
+  underline = true,
   virtual_text = true,
   signs = true,
   update_in_insert = false,
 })
+vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#DB635A", bg = nil })
 EOF
 
 
@@ -404,7 +412,7 @@ EOF
 lua << EOF
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = { "pyright", "ts_ls", "lua_ls", "gopls" }, -- replace with servers you want
+  ensure_installed = { "ts_ls", "lua_ls", "gopls", "pyright" }, -- replace with servers you want, removed pyright
   automatic_installation = true,
 })
 EOF
@@ -421,6 +429,7 @@ nnoremap gD <cmd>lua vim.lsp.buf.declaration()<CR>
 
 " Find references
 nnoremap gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap fr <cmd>lua require('telescope.builtin').lsp_references()<CR>
 
 " Hover docs
 nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>
@@ -432,4 +441,4 @@ nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
 
 " Format buffer
-nnoremap <leader>f <cmd>lua vim.lsp.buf.format({ async = true })<CR>
+nnoremap <leader>fm <cmd>lua vim.lsp.buf.format({ async = true })<CR>

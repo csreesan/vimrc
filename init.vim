@@ -41,7 +41,13 @@ nnoremap <leader>] gt
 nnoremap <leader>p "0p
 nnoremap <leader>6 <C-^>
 nnoremap <leader>c "*
-nnoremap <leader>v :vertical resize 84<CR>
+nnoremap <leader>r :vertical resize 84<CR>
+
+" clipboard copy and paste
+vnoremap <leader>c "*y
+nnoremap <leader>c "*y
+nnoremap <leader>v "*p
+vnoremap <leader>v "*p
 
 " cycling to different windows
 nnoremap <leader>w <C-w><C-w>

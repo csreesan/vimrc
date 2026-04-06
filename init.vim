@@ -5,7 +5,7 @@ syntax on
 "
 "  for more info on what the setting does:
 "  :h <setting_name> 
-set relativenumber
+" set relativenumber
 set number
 set title 
 set expandtab

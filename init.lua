@@ -82,12 +82,16 @@ require("lazy").setup({
     version = "*",
     dependencies = { "rafamadriz/friendly-snippets" },
     opts = {
-      keymap = { preset = "default" },
+      keymap = {
+        preset = "default",
+        ["<Tab>"]   = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<CR>"]    = { "accept", "fallback" },
+      },
       sources = { default = { "lsp", "path", "snippets", "buffer" } },
       signature = { enabled = true },
     },
   },
-
 
   -- Go
   { "fatih/vim-go",

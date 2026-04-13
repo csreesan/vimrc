@@ -65,7 +65,7 @@ require("lazy").setup({
     dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "ts_ls", "lua_ls", "gopls", "pyright" },
+        ensure_installed = { "ts_ls", "lua_ls", "gopls", "pyright", "clangd" },
         automatic_installation = true,
       })
 

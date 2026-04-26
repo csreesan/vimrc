@@ -10,7 +10,7 @@ vim.opt.colorcolumn    = "80"
 vim.opt.termguicolors  = true
 vim.opt.signcolumn     = "yes"   -- prevent layout shift on LSP signs
 vim.opt.updatetime     = 250     -- faster LSP hover / CursorHold
-vim.opt.clipboard      = "unnamedplus"  -- use system clipboard by default
+-- vim.opt.clipboard      = "unnamedplus"  -- use system clipboard by default
 
 -- ─────────────────────────────────────────────
 --  LEADER KEY
@@ -51,7 +51,21 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = { { "<leader>n", "<cmd>NvimTreeToggle<CR>" } },
     config = function()
-      require("nvim-tree").setup({ filters = { dotfiles = false } })
+      require("nvim-tree").setup({
+        filters = { dotfiles = false },
+        on_attach = function(bufnr)
+          local api = require("nvim-tree.api")
+          local opts = function(desc)
+            return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+          end
+          -- load defaults first
+          api.config.mappings.default_on_attach(bufnr)
+          -- then add/override
+          vim.keymap.set("n", "v", api.node.open.vertical,   opts("Open: Vertical Split"))
+          vim.keymap.set("n", "s", api.node.open.horizontal, opts("Open: Horizontal Split"))
+          vim.keymap.set("n", "t", api.node.open.tab,        opts("Open: New Tab"))
+        end,
+      })
     end,
   },
 
@@ -84,9 +98,12 @@ require("lazy").setup({
     opts = {
       keymap = {
         preset = "default",
-        ["<Tab>"]   = { "select_next", "fallback" },
-        ["<S-Tab>"] = { "select_prev", "fallback" },
-        ["<CR>"]    = { "accept", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+      },
+      completion = {
+        list = {
+          selection = { preselect = true, auto_insert = false },
+        },
       },
       sources = { default = { "lsp", "path", "snippets", "buffer" } },
       signature = { enabled = true },
@@ -228,3 +245,4 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = { "*.tf", "*.tfvars" },
   command = "silent !tofu fmt %",
 })
+

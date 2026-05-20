@@ -237,7 +237,7 @@ vim.g.go_highlight_functions = 1
 local indent_au = vim.api.nvim_create_augroup("FileTypeIndent", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = indent_au,
-  pattern = { "typescript", "javascript", "html", "css" },
+  pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact", "html", "css" },
   callback = function()
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop    = 2
